@@ -10,7 +10,7 @@ Its 3am you have just ssh'd to a server and due to performance problems.
 The Load seems high, but you look after 2000 servers... Is this a normal load?
 You need to know what is ''high'' for this system????
 
-A quick ''' spark.py -l ''' and you can see a 24 hour history of the loadavg
+A quick _spark.py -l_ and you can see a 24 hour history of the loadavg
 for this system.
 
 You know now that is a normal loadavg and you can investigate somethng else.
@@ -18,11 +18,12 @@ You know now that is a normal loadavg and you can investigate somethng else.
 Usage
 ------
 
-usage: spark.py [-h] [-f filesystem] [-l] [-c custom graphite path]
+    usage: spark.py [-h] [-f filesystem] [-l] [-c custom graphite path]
+    
+    Display a sparkline of this or other servers
 
-Display a sparkline of this or other servers
-
-optional arguments:
+    optional arguments:
+    
     -h, --help            show this help message and exit
     -f filesystem, --filesystem filesystem
     -l, --loadavg
