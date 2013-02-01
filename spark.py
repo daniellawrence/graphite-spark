@@ -67,8 +67,8 @@ def draw_spark(data=None,max_point=-1,min_point=65333,title=None):
         weighted_value = int( round( (p / max_point) * 7 ) )
         print columns[weighted_value],
 
-    print ( "\nMax: %(max_point)s\tMin: %(min_point)s\tFirst: %(first_point)s\"
-		    tLast: %(last_point)s\n" ) % locals()
+    print ( "\nMax: %(max_point)s\tMin: %(min_point)s\tFirst: %(first_point)s\
+		    \tLast: %(last_point)s\n" ) % locals()
 
 #------------------------------------------------------------------------------
 def gather_data(url):
