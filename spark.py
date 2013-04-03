@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.7
+#!/usr/bin/env python
 # -*- coding: latin-1 -*-
 #
 #    This program is free software: you can redistribute it and/or modify
