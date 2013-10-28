@@ -1,6 +1,9 @@
 graphite-spark
 ==============
 
+[![Pypi Downloads](https://pypip.in/d/graphite-spark/badge.png)](https://crate.io/packages/graphite-spark)
+[![Pypi Version](https://pypip.in/v/graphite-spark/badge.png)](https://crate.io/packages/graphite-spark)
+
 A sparkline for graphite data:  ▄ ▄ ▆ ▇ ▄ ▄ ▃ ▃
 
 When to use
