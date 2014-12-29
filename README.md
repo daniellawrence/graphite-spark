@@ -11,17 +11,17 @@ When to use
 
 Its 3am you have just ssh'd to a server and due to performance problems.
 The Load seems high, but you look after 2000 servers... Is this a normal load?
-You need to know what is ''high'' for this system????
+You need to know what is ''high'' for this system?
 
-A quick _spark.py -l_ and you can see a 24 hour history of the loadavg
+A quick _graphitespark -l_ and you can see a 24 hour history of the loadavg
 for this system.
 
-You know now that is a normal loadavg and you can investigate somethng else.
+You know now that is a normal loadavg and you can investigate something else.
 
 Usage
 ------
 
-    usage: spark.py [-h] [-f filesystem] [-l] [-c custom graphite path]
+    usage: graphitespark [-h] [-f filesystem] [-l] [-c custom graphite path]
     
     Display a sparkline of this or other servers
 
@@ -33,14 +33,37 @@ Usage
     -c custom graphite path, --custom custom graphite path
 
 
+Installation
+-----------------------------
+
+The argparse module is a required dependency.  If not already installed:
+
+    % pip install argparse
+
+To install graphite-spark system wide:
+
+    % git clone https://github.com/daniellawrence/graphite-spark.git
+    % cd graphite-spark
+    % python setup.py install
+
+Then, just execute:
+
+    % /usr/bin/graphitespark
+
+To run standalone without installation:
+
+    % git clone https://github.com/daniellawrence/graphite-spark.git
+    % cd graphite-spark
+    % PYTHONPATH=src bin/graphitespark
+
 
 Example - Check Load average
 -----------------------------
 
 Checking the load averages of the current system that you are logged into
-straigh from the command line!
+straight from the command line!
 
-    server 1 % spark.py -l
+    server 1 % graphitespark -l
     -24hours@1h blocks
     1min load avg.
     █ ▅ ▆ ▄ ▄ ▆ ▆ ▄ ▃ ▃ ▃ ▂ ▃ ▃ ▂ ▃ ▃ ▃ ▃ ▃ ▄ ▅ ▃ ▃ 
@@ -56,13 +79,14 @@ straigh from the command line!
     █ ▆ ▄ ▄ ▅ ▇ ▇ ▆ ▄ ▄ ▄ ▃ ▃ ▃ ▃ ▃ ▃ ▃ ▃ ▃ ▃ ▃ ▃ ▃ 
     Max: 1.82       Min: 0.53       First: 1.82     Last: 0.59
 
-Example - filesystem capcity
+
+Example - filesystem capacity
 -----------------------------
 
 Checking the the filesystem capacity of a local filesystem on the current host,
 from the data in a remote graphite server.
 
-    server 1 % ./spark.py -f /var/tmp
+    server 1 % graphitespark -f /var/tmp
     Filesystem capacity: /var
     -24hours@1h blocks
     █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ 
@@ -71,13 +95,14 @@ from the data in a remote graphite server.
 As you can see the script was able to work out the mount point of the filesystem
 so that the data was still found in the graphite system.
 
+
 Example - custom graphs
 -----------------------------
 
 Checking anything that you want from any system that you are logged into.
 As the data is in the remote graphite system.
 
-    server 1 % ./spark.py -c 'systems.s.server2.loadavg.15min'
+    server 1 % graphitespark -c 'systems.s.server2.loadavg.15min'
     -24hours@1h blocks
     ▅ ▅ ▅ ▄ █ █ ▅ ▄ ▂ ▄ ▃ ▂ ▂ ▂ ▂ ▂ ▂ ▂ ▃ ▃ ▃ ▂ ▃ ▂ ▂ 
     Max: 15.03      Min: 1.73       First: 9.07     Last: 1.73
