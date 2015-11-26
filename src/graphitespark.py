@@ -13,7 +13,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#    
+#
 #    Written By Danny Lawrence <dannyla@linux.com>
 #
 #
@@ -26,13 +26,22 @@ import argparse
 def draw_spark(data=None, max_point=-1, min_point=65333, title=None):
     """ Draw the sparkline based on the list of data points
     The column that will be used for each point is the datapoint as a float()
-    diveded by the value of the point with the highest value (maximum). 
-    This is then Rounded to the nearest whole number, then the total is 
+    diveded by the value of the point with the highest value (maximum).
+    This is then Rounded to the nearest whole number, then the total is
     mutlplied by 7. This weighted number is then used as the index to the below
     list. Where the max value would be index 7 (█) and the least value
     would be index 0 (▁)
     """
-    columns = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█']
+    columns = [
+        '▁',
+        '▂',
+        '▃',
+        '▄',
+        '▅',
+        '▆',
+        '▇',
+        '█'
+    ]
 
     # The below takes all the data that has been gathered and finds the min and
     # max values for the list of data points. min() and max() where not used as
@@ -109,9 +118,10 @@ def graph2url(graph):
 
     print "%(from_point)s@%(summarize_to)s blocks" % locals()
 
-    url = ("http://%(graphite_server)s/render?from=%(from_point)s"
-    "&until=%(to_point)s&target=summarize(%(graph)s,'%(summarize_to)s',"
-    "'%(summarize_by)s')&rawData=True" ) % locals()
+    url = (
+        "http://%(graphite_server)s/render?from=%(from_point)s"
+        "&until=%(to_point)s&target=summarize(%(graph)s,'%(summarize_to)s',"
+        "'%(summarize_by)s')&rawData=True") % locals()
     return url
 
 
@@ -138,7 +148,7 @@ def graph_filesystem(filesystem='.'):
     h = hostname()
     f = current_filesystem(filesystem)
 
-    print "Filesystem capacity: %s" % ( f.replace('._','/' ) )
+    print "Filesystem capacity: %s" % (f.replace('._', '/'))
 
     graph = "systems.%(h)s.filesystem%(f)s.capacity" % locals()
     return graph
@@ -161,44 +171,44 @@ def graphite_graph(args):
     url = None
 
     if args.filesystem:
-        graph = graph_filesystem( filesystem=args.filesystem )
-        url = graph2url( graph )
-        data = gather_data( url )
+        graph = graph_filesystem(filesystem=args.filesystem)
+        url = graph2url(graph)
+        data = gather_data(url)
         draw_spark(data)
         exit(0)
 
     if args.loadavg:
-        for la in [ '1min','5min','15min' ]:
-            graph = graph_loadavg( la )
-            url = graph2url( graph )
-            data = gather_data( url )
-            draw_spark(data,title="%(la)s load avg." % locals())
+        for la in ['1min', '5min', '15min']:
+            graph = graph_loadavg(la)
+            url = graph2url(graph)
+            data = gather_data(url)
+            draw_spark(data, title="%(la)s load avg." % locals())
         exit(0)
 
     if args.custom:
-        url = graph2url( args.custom )
-        data = gather_data( url )
+        url = graph2url(args.custom)
+        data = gather_data(url)
         draw_spark(data)
         exit(0)
 
-    return False        
-        
-#------------------------------------------------------------------------------
+    return False
+
+
 def main():
     """
-    Parse the args, then bring on the sparks! 
+    Parse the args, then bring on the sparks!
     """
     help_text = "Display a spark line of this or other servers"
     parser = argparse.ArgumentParser(description=help_text)
-    parser.add_argument('-f','--filesystem', metavar='filesystem', type=str)
-    parser.add_argument('-l','--loadavg', dest='loadavg', action='store_true')
-    parser.add_argument('-c','--custom', dest='custom', 
-		    metavar='custom graphite path', type=str)
+    parser.add_argument('-f', '--filesystem', metavar='filesystem', type=str)
+    parser.add_argument('-l', '--loadavg', dest='loadavg', action='store_true')
+    parser.add_argument('-c', '--custom', dest='custom',
+                        metavar='custom graphite path', type=str)
 
     args = parser.parse_args()
     graphite_graph(args)
     parser.error('I dont know what you want to graph?')
 
-#------------------------------------------------------------------------------
+
 if __name__ == "__main__":
     main()
