@@ -14,7 +14,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    
-#    Written By Danny Lawrence <daniel@danielscottlawrence.com>
+#    Written By Danny Lawrence <dannyla@linux.com>
 #
 #
 from os import uname, popen
@@ -22,8 +22,8 @@ from sys import exit
 from urllib2 import urlopen
 import argparse
 
-#------------------------------------------------------------------------------
-def draw_spark(data=None,max_point=-1,min_point=65333,title=None):
+
+def draw_spark(data=None, max_point=-1, min_point=65333, title=None):
     """ Draw the sparkline based on the list of data points
     The column that will be used for each point is the datapoint as a float()
     diveded by the value of the point with the highest value (maximum). 
@@ -32,8 +32,7 @@ def draw_spark(data=None,max_point=-1,min_point=65333,title=None):
     list. Where the max value would be index 7 (█) and the least value
     would be index 0 (▁)
     """
-    columns=['▁','▂','▃','▄','▅','▆','▇','█']
-
+    columns = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█']
 
     # The below takes all the data that has been gathered and finds the min and
     # max values for the list of data points. min() and max() where not used as
@@ -41,36 +40,35 @@ def draw_spark(data=None,max_point=-1,min_point=65333,title=None):
     # This is also used to cast all the data into floats().
     for i in range(len(data)):
         try:
-           data[i] = float(data[i])
+            data[i] = float(data[i])
         except ValueError:
-           del data[i]
-           continue
+            del data[i]
+            continue
 
         if data[i] > max_point:
-           max_point = data[i]
+            max_point = data[i]
         if data[i] < min_point:
-           min_point = data[i]
+            min_point = data[i]
 
-     
     # Get the first and last datapoint to be used in the display of the spark.
     first_point = data[0]
     last_point = data[-1]
-
 
     # If we have title then print it out
     if title:
         print title
 
     for p in data:
-	# work out the weighted value, as it can only be 0-7 as that is all we
-	# can draw on the command line.
-        weighted_value = int( round( (p / max_point) * 7 ) )
+        # work out the weighted value, as it can only be 0-7 as that is all we
+        # can draw on the command line.
+        weighted_value = int(round((p / max_point) * 7))
         print columns[weighted_value],
 
-    print ( "\nMax: %(max_point)s\tMin: %(min_point)s\tFirst: %(first_point)s\
-		    \tLast: %(last_point)s\n" ) % locals()
+    print (
+        "\nMax: %(max_point)s\tMin: %(min_point)s\tFirst: %(first_point)s\
+        \tLast: %(last_point)s\n") % locals()
 
-#------------------------------------------------------------------------------
+
 def gather_data(url):
     """ use the url to gather the remote data from graphi via urllib2 """
     f = urlopen(url)
@@ -87,13 +85,13 @@ def gather_data(url):
     data = data.split('|')[1].split(',')
     return data
 
-#------------------------------------------------------------------------------
+
 def hostname():
     """ Work out the current hostname """
     host = uname()[1]
-    return "%s.%s" % ( host[0], host )
+    return "%s.%s" % (host[0], host)
 
-#------------------------------------------------------------------------------
+
 def graph2url(graph):
     """
     take a desired graph and turn it in to the graphite url-api expected format.
@@ -110,13 +108,13 @@ def graph2url(graph):
     summarize_by = "max"
 
     print "%(from_point)s@%(summarize_to)s blocks" % locals()
-    
-    url = ( "http://%(graphite_server)s/render?from=%(from_point)s" 
+
+    url = ("http://%(graphite_server)s/render?from=%(from_point)s"
     "&until=%(to_point)s&target=summarize(%(graph)s,'%(summarize_to)s',"
     "'%(summarize_by)s')&rawData=True" ) % locals()
     return url
 
-#------------------------------------------------------------------------------
+
 def current_filesystem(filesystem='.'):
     """ Turn a requested path of a filesystem into the real filesystem. """
     real_filesystem = None
@@ -128,24 +126,24 @@ def current_filesystem(filesystem='.'):
 
     df_output = popen(df).readlines()
     try:
-        real_filesystem = df_output[1].strip().split()[5].replace('/','._')
+        real_filesystem = df_output[1].strip().split()[5].replace('/', '._')
     except IndexError:
         print "Couldn't find filesystem '%(filesystem)s' on this server" % locals()
         exit(1)
     return real_filesystem
 
-#------------------------------------------------------------------------------
+
 def graph_filesystem(filesystem='.'):
     """ Given a filesystem generate the url to get its capacity """
     h = hostname()
     f = current_filesystem(filesystem)
-    
+
     print "Filesystem capacity: %s" % ( f.replace('._','/' ) )
 
     graph = "systems.%(h)s.filesystem%(f)s.capacity" % locals()
     return graph
 
-#------------------------------------------------------------------------------
+
 def graph_loadavg(la='15min'):
     """
     Generate the url for the load avg. for the current system (default: 15min )
@@ -153,12 +151,10 @@ def graph_loadavg(la='15min'):
     h = hostname()
     graph = "systems.%(h)s.loadavg.%(la)s" % locals()
     return graph
-    
 
-#------------------------------------------------------------------------------
+
 def graphite_graph(args):
-    """ 
-    Depending on the args that have been given, show the user diffrent sparks.
+    """ Depending on the args that have been given, show the user diffrent sparks.
     If the user didn't choose a spark line return false, so that the usage
     can be shown instead.
     """
