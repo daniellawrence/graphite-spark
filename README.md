@@ -1,8 +1,12 @@
 graphite-spark
 ==============
 
+[![Build Status](https://travis-ci.org/daniellawrence/graphite-spark.png?banch=master)](https://travis-ci.org/daniellawrence/graphite-spark?branch=master)
 [![Pypi Downloads](https://pypip.in/d/graphite-spark/badge.png)](https://crate.io/packages/graphite-spark)
 [![Pypi Version](https://pypip.in/v/graphite-spark/badge.png)](https://crate.io/packages/graphite-spark)
+[![Changelog](http://allmychanges.com/p/python/graphite-spark/badge/)](http://allmychanges.com/p/python/graphite-spark/?utm_source=badge)
+[![Coverage Status](https://coveralls.io/repos/daniellawrence/graphite-spark/badge.png)](https://coveralls.io/r/daniellawrence/graphite-spark)
+
 
 A sparkline for graphite data:  ▄ ▄ ▆ ▇ ▄ ▄ ▃ ▃
 
