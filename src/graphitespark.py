@@ -71,11 +71,11 @@ def draw_spark(data=None, max_point=-1, min_point=65333, title=None):
         # work out the weighted value, as it can only be 0-7 as that is all we
         # can draw on the command line.
         weighted_value = int(round((p / max_point) * 7))
-        print columns[weighted_value],
+        print(columns[weighted_value])
 
     print(
         "\nMax: %(max_point)s\tMin: %(min_point)s\tFirst: %(first_point)s\
-        \tLast: %(last_point)s\n") % locals()
+        \tLast: %(last_point)s\n" % locals())
 
 
 def gather_data(url):
@@ -85,11 +85,11 @@ def gather_data(url):
     try:
         data = all_data[0]
     except IndexError:
-        print "The url='%(url)s'\nDid not return any data.." % locals()
+        print("The url='%(url)s'\nDid not return any data.." % locals())
         exit(1)
 
     if '|' not in data:
-        print "The url='%(url)s'\nDid not return correct data..." % locals()
+        print("The url='%(url)s'\nDid not return correct data..." % locals())
         exit(1)
     data = data.split('|')[1].split(',')
     return data
@@ -116,7 +116,7 @@ def graph2url(graph):
     summarize_to = "1h"
     summarize_by = "max"
 
-    print "%(from_point)s@%(summarize_to)s blocks" % locals()
+    print("%(from_point)s@%(summarize_to)s blocks" % locals())
 
     url = (
         "http://%(graphite_server)s/render?from=%(from_point)s"
@@ -138,7 +138,7 @@ def current_filesystem(filesystem='.'):
     try:
         real_filesystem = df_output[1].strip().split()[5].replace('/', '._')
     except IndexError:
-        print "Couldn't find filesystem '%(filesystem)s' on this server" % locals()
+        print("Couldn't find filesystem '%(filesystem)s' on this server" % locals())
         exit(1)
     return real_filesystem
 
@@ -148,7 +148,7 @@ def graph_filesystem(filesystem='.'):
     h = hostname()
     f = current_filesystem(filesystem)
 
-    print "Filesystem capacity: %s" % (f.replace('._', '/'))
+    print("Filesystem capacity: %s" % (f.replace('._', '/')))
 
     graph = "systems.%(h)s.filesystem%(f)s.capacity" % locals()
     return graph
