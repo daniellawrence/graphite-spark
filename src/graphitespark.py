@@ -21,6 +21,7 @@ from os import uname, popen
 from sys import exit
 from urllib2 import urlopen
 import argparse
+import six
 
 
 def draw_spark(data=None, max_point=-1, min_point=65333, title=None):
@@ -71,7 +72,7 @@ def draw_spark(data=None, max_point=-1, min_point=65333, title=None):
         # work out the weighted value, as it can only be 0-7 as that is all we
         # can draw on the command line.
         weighted_value = int(round((p / max_point) * 7))
-        print(columns[weighted_value])
+        six.print_(columns[weighted_value], end="")
 
     print(
         "\nMax: %(max_point)s\tMin: %(min_point)s\tFirst: %(first_point)s\
