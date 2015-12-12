@@ -3,13 +3,13 @@ graphite-spark
 
 [![Build Status](https://travis-ci.org/daniellawrence/graphite-spark.png?banch=master)](https://travis-ci.org/daniellawrence/graphite-spark?branch=master)
 [![Coverage Status](https://coveralls.io/repos/daniellawrence/graphitesend/badge.svg?branch=master&service=github)](https://coveralls.io/github/daniellawrence/graphitesend?branch=master)
-[x](https://img.shields.io/pypi/v/graphite-spark.svg)
-[x](https://img.shields.io/pypi/l/graphite-spark.svg)
-[x](https://img.shields.io/pypi/wheel/graphite-spark.svg)
-[x](https://img.shields.io/pypi/format/graphite-spark.svg)
-[x](https://img.shields.io/pypi/pyversions/graphite-spark.svg)
-[x](https://img.shields.io/pypi/implementation/graphite-spark.svg)
-[x](https://img.shields.io/pypi/status/graphite-spark.svg)
+[https://img.shields.io/pypi/v/graphite-spark.svg](x)
+[https://img.shields.io/pypi/l/graphite-spark.svg](x)
+[https://img.shields.io/pypi/wheel/graphite-spark.svg](x)
+[https://img.shields.io/pypi/format/graphite-spark.svg](x)
+[https://img.shields.io/pypi/pyversions/graphite-spark.svg](x)
+[https://img.shields.io/pypi/implementation/graphite-spark.svg](x)
+[https://img.shields.io/pypi/status/graphite-spark.svg](x)
 
 A sparkline for graphite data:  ▄ ▄ ▆ ▇ ▄ ▄ ▃ ▃
 
