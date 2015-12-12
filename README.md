@@ -5,7 +5,7 @@ graphite-spark
 [![Pypi Downloads](https://pypip.in/d/graphite-spark/badge.png)](https://crate.io/packages/graphite-spark)
 [![Pypi Version](https://pypip.in/v/graphite-spark/badge.png)](https://crate.io/packages/graphite-spark)
 [![Changelog](http://allmychanges.com/p/python/graphite-spark/badge/)](http://allmychanges.com/p/python/graphite-spark/?utm_source=badge)
-[![Coverage Status](https://coveralls.io/repos/daniellawrence/graphite-spark/badge.png)](https://coveralls.io/r/daniellawrence/graphite-spark)
+[![Coverage Status](https://coveralls.io/repos/daniellawrence/graphitesend/badge.svg?branch=master&service=github)](https://coveralls.io/github/daniellawrence/graphitesend?branch=master)
 
 
 A sparkline for graphite data:  ▄ ▄ ▆ ▇ ▄ ▄ ▃ ▃
