@@ -13,11 +13,11 @@ setup(
     package_dir={'': 'src'},
     packages=[''],
     license="GPL",
-    scripts=['bin/graphitespark']
+    scripts=['bin/graphitespark'],
     classifiers=textwrap.dedent("""
     Development Status :: 5 - Production/Stable
     Intended Audience :: Developers
-    License :: OSI Approved :: GPLv3
+    License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
     Operating System :: OS Independent
     Programming Language :: Python :: 2.7
     Programming Language :: Python :: 3
