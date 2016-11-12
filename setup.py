@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from distutils.core import setup
+from setuptools import setup
 import textwrap
 
 
@@ -10,10 +10,13 @@ setup(
     author='Danny Lawrence',
     author_email='dannyla@linux.com',
     url='http://www.github.com/daniellawrence/graphite-spark',
-    package_dir={'': 'src'},
-    packages=[''],
+    entry_points={
+        'console_scripts': [
+            'graphitespark = graphitespark:main'
+        ]
+    },
+    packages=['graphitespark'],
     license="GPL",
-    scripts=['bin/graphitespark'],
     classifiers=textwrap.dedent("""
     Development Status :: 5 - Production/Stable
     Intended Audience :: Developers
