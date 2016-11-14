@@ -1,24 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-#    Written By Danny Lawrence <dannyla@linux.com>
-#
-#
+"""
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    Written By Danny Lawrence <dannyla@linux.com>
+"""
+
 from os import uname, popen
-from sys import exit
 from urllib2 import urlopen
 import six
 
@@ -33,21 +32,15 @@ def draw_spark(data=None, max_point=-1, min_point=65333, title=None):
     would be index 0 (▁)
     """
     columns = [
-        '▁',
-        '▂',
-        '▃',
-        '▄',
-        '▅',
-        '▆',
-        '▇',
-        '█'
+        '▁', '▂', '▃', '▄',
+        '▅', '▆', '▇', '█'
     ]
 
     # The below takes all the data that has been gathered and finds the min and
     # max values for the list of data points. min() and max() where not used as
     # some times the data can contain a 'None' value.
     # This is also used to cast all the data into floats().
-    for i in range(len(data)):
+    for i, _ in enumerate(data):
         try:
             data[i] = float(data[i])
         except ValueError:
@@ -67,21 +60,22 @@ def draw_spark(data=None, max_point=-1, min_point=65333, title=None):
     if title:
         print(title)
 
-    for p in data:
+    for point in data:
         # work out the weighted value, as it can only be 0-7 as that is all we
         # can draw on the command line.
-        weighted_value = int(round((p / max_point) * 7))
+        weighted_value = int(round((point / max_point) * 7))
         six.print_(columns[weighted_value], end="")
 
-    print(
-        "\nMax: %(max_point)s\tMin: %(min_point)s\tFirst: %(first_point)s\
-        \tLast: %(last_point)s\n" % locals())
+    print("Max: {0} min: {1} First: {2} Last: {3}".format(
+        max_point, min_point, first_point, last_point
+    ))
 
 
 def gather_data(url):
     """ use the url to gather the remote data from graphi via urllib2 """
-    f = urlopen(url)
-    all_data = f.readlines()
+    file_handle = urlopen(url)
+    all_data = file_handle.readlines()
+
     try:
         data = all_data[0]
     except IndexError:
@@ -95,7 +89,7 @@ def gather_data(url):
     return data
 
 
-def hostname():
+def get_hostname():
     """ Work out the current hostname """
     host = uname()[1]
     return "%s.%s" % (host[0], host)
@@ -119,22 +113,28 @@ def graph2url(graph):
     print("%(from_point)s@%(summarize_to)s blocks" % locals())
 
     url = (
-        "http://%(graphite_server)s/render?from=%(from_point)s"
-        "&until=%(to_point)s&target=summarize(%(graph)s,'%(summarize_to)s',"
-        "'%(summarize_by)s')&rawData=True") % locals()
+        "http://{graphite_server}/render?from={from_point}"
+        "&until={to_point}&target=summarize({graph},'{summarize_to}',"
+        "'{summarize_by}')&rawData=True"
+    ).format(
+        graphite_server=graphite_server, from_point=from_point,
+        to_point=to_point, graph=graph, summarize_to=summarize_to,
+        summarize_by=summarize_by
+    )
+
     return url
 
 
-def current_filesystem(filesystem='.'):
+def get_current_filesystem(filesystem='.'):
     """ Turn a requested path of a filesystem into the real filesystem. """
     real_filesystem = None
     # Assume solaris.
-    df = 'df -h %(filesystem)s 2>&1' % locals()
+    df_command = 'df -h {0} 2>&1'.format(filesystem)
 
     if uname()[0] == "Linux":
-        df = 'df -Ph %(filesystem)s 2>&1' % locals()
+        df_command = 'df -Ph {0} 2>&1'.format(filesystem)
 
-    df_output = popen(df).readlines()
+    df_output = popen(df_command).readlines()
     try:
         real_filesystem = df_output[1].strip().split()[5].replace('/', '._')
     except IndexError:
@@ -145,22 +145,20 @@ def current_filesystem(filesystem='.'):
 
 def graph_filesystem(filesystem='.'):
     """ Given a filesystem generate the url to get its capacity """
-    h = hostname()
-    f = current_filesystem(filesystem)
+    hostname = get_hostname()
+    current_filesystem = get_current_filesystem(filesystem)
 
-    print("Filesystem capacity: %s" % (f.replace('._', '/')))
+    print("Filesystem capacity: %s" % (current_filesystem.replace('._', '/')))
 
-    graph = "systems.%(h)s.filesystem%(f)s.capacity" % locals()
-    return graph
+    return "systems.{0}.filesystem{1}.capacity".format(hostname, current_filesystem)
 
 
-def graph_loadavg(la='15min'):
+def graph_loadavg(load_avg='15min'):
     """
     Generate the url for the load avg. for the current system (default: 15min )
     """
-    h = hostname()
-    graph = "systems.%(h)s.loadavg.%(la)s" % locals()
-    return graph
+    hostname = get_hostname()
+    return "systems.{0}.loadavg.{1}".format(hostname, load_avg)
 
 
 def graphite_graph(args):
@@ -178,11 +176,11 @@ def graphite_graph(args):
         exit(0)
 
     if args.loadavg:
-        for la in ['1min', '5min', '15min']:
-            graph = graph_loadavg(la)
+        for load_avg in ['1min', '5min', '15min']:
+            graph = graph_loadavg(load_avg)
             url = graph2url(graph)
             data = gather_data(url)
-            draw_spark(data, title="%(la)s load avg." % locals())
+            draw_spark(data, title="{0} load avg.".format(load_avg))
         exit(0)
 
     if args.custom:
